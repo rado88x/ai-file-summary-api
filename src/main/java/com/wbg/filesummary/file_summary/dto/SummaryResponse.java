@@ -1,0 +1,14 @@
+package com.wbg.filesummary.file_summary.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class SummaryResponse {
+    private String fileName;
+    private String summary;
+    private String status;
+}
