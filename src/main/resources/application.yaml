@@ -4,6 +4,7 @@ spring:
     username: postgres
     password: admin
     driver-class-name: org.postgresql.Driver
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -12,12 +13,22 @@ spring:
       hibernate.hbm2ddl.create_namespaces: true
       hibernate.default_schema: wbg
 
-  openai:
-    api-key: ${OPENAI_API_KEY}
-    model: gpt-3.5-turbo
   ai:
+    openai:
+      enabled: true
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        options:
+          model: gpt-4o-mini
+    azure:
+      openai:
+        enabled: false
     anthropic:
-    enabled: false
+      enabled: false
+
+  files:
+    extractor:
+      enabled: true
 
 springdoc:
   swagger-ui:

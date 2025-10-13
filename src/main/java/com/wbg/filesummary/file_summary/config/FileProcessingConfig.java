@@ -8,6 +8,6 @@ import org.springframework.context.annotation.Configuration;
 public class FileProcessingConfig {
     @Bean("fileContentExtractor")
     public FileContentExtractor fileContentExtractor() {
-        return new FileContentExtractor();
+        return new TikaFileContentExtractor();
     }
 }

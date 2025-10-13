@@ -1,11 +1,12 @@
 package com.wbg.filesummary.file_summary.service;
 
 import com.wbg.filesummary.file_summary.entity.FileMetadata;
+import org.springframework.ai.chat.client.ChatClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
+
 
 import java.io.File;
 
