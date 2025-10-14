@@ -24,11 +24,37 @@ public class FileProcessingService {
         this.openAIService = openAIService;
     }
 
-    @Async ("fileProcessorExecutor")
+    @Async("fileProcessorExecutor")
     public void processFile(File file) {
         logger.info("Starting asynchronous processing for file: {}", file.getName());
+
         FileMetadata metadata = null;
 
-        metadata = metadataService.createInitialMetadata(file);
+        try {
+            // generate metadata and status tracking (PENDING for initial state)
+            metadata = metadataService.createInitialMetadata(file);
+
+            // extracting content
+            String content = contentExtractor.extractText(file.getAbsolutePath(), metadata.getFileFormat());
+            metadata.setTextContent(content);
+
+            //gen AI resume from ChatGPT
+            String summary = openAIService.summarize(content);
+            metadata.setSummary(summary);
+            metadata.setStatus("SUMMARIZED");
+
+            //persisting updated information to db
+            metadataService.save(metadata);
+            logger.info("Successfully summarized file: {}", file.getName());
+
+        } catch (Exception e) {
+            logger.error("Failed to process file: {}", file.getName(), e);
+            if (metadata != null) {
+                metadata.setStatus("FAILED: " + e.getMessage());
+                metadataService.save(metadata);
+            }
+        }
+
+
     }
 }

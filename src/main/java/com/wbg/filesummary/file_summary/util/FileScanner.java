@@ -22,7 +22,8 @@ public class FileScanner {
     public List<File> scanFolder() {
 
         Path folderPath = Path.of(DEFAULT_SCAN_PATH);
-
+        System.out.println("Folder Path = " + folderPath);
+        System.out.println("Absolute Path = " + folderPath.toAbsolutePath());
         if (Files.exists(folderPath)) {
             logger.warn("Scanning path not found: {}. Creating it.", folderPath.toAbsolutePath());
 

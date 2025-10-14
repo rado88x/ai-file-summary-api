@@ -17,13 +17,14 @@ spring:
     default-schema: wbg
     schemas: wbg
     create-schemas: true
-    baseline-on-migrate: true     # <- key fix
-    baseline-version: 1           # good default; see note below
+    baseline-on-migrate: true
+    baseline-version: 1
 
   session:
     store-type: jdbc
     jdbc:
-      initialize-schema: never   # Flyway owns the schema objects
+      initialize-schema: always   # Flyway owns the schema objects
+      table-name: wbg.spring_session
 
   ai:
     openai:
