@@ -13,10 +13,23 @@ spring:
       hibernate.hbm2ddl.create_namespaces: true
       hibernate.default_schema: wbg
 
+  flyway:
+    default-schema: wbg
+    schemas: wbg
+    create-schemas: true
+    baseline-on-migrate: true     # <- key fix
+    baseline-version: 1           # good default; see note below
+
+  session:
+    store-type: jdbc
+    jdbc:
+      initialize-schema: never   # Flyway owns the schema objects
+
   ai:
     openai:
       enabled: true
       api-key: ${OPENAI_API_KEY}
+      base-url: https://api.openai.com/v1
       chat:
         options:
           model: gpt-4o-mini
