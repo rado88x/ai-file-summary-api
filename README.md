@@ -35,3 +35,5 @@ mvn spring-boot:run
 
 
 <img width="1919" height="1044" alt="shot2" src="https://github.com/user-attachments/assets/6f455120-0175-482a-b43f-ab8f42ca025c" />
+
+<img width="1897" height="541" alt="image" src="https://github.com/user-attachments/assets/26bda59c-d2b0-4e18-bbe5-431947fd1ee4" />
