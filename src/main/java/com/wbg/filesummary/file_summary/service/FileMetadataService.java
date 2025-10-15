@@ -70,4 +70,8 @@ public class FileMetadataService {
         return (lastDot > 0) ? fileName.substring(lastDot + 1) : "UNKNOWN";
     }
 
+    public void cleanUp() {
+        repository.deleteAll();
+    }
+
 }

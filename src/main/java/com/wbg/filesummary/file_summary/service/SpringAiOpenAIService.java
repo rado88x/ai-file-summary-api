@@ -18,12 +18,12 @@ public class SpringAiOpenAIService implements OpenAIService {
     }*/
 
     public SpringAiOpenAIService(ChatClient.Builder chatBuilder) {
-        this.chat = chatBuilder.build(); // resolves to the active provider
+        this.chat = chatBuilder.build();
     }
 
     @Override
     public String summarize(String text) {
-        logger.info("Step 3 --> Summarizing content.");
+        logger.info("Step 3 -> Summarizing content...");
         return chat.prompt()
                 .system("You summarize file concisely.")
                 .user("Summarize this:\n" + text)
