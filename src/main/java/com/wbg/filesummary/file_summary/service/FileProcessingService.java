@@ -1,9 +1,12 @@
 package com.wbg.filesummary.file_summary.service;
 
 import com.wbg.filesummary.file_summary.entity.FileMetadata;
+import com.wbg.filesummary.file_summary.exception.RecordAlreadyExistsException;
+import com.wbg.filesummary.file_summary.util.FileMetadataChecksum;
 import org.springframework.ai.chat.client.ChatClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.scheduling.annotation.Async;
 
@@ -33,6 +36,14 @@ public class FileProcessingService {
         try {
             // generate metadata and status tracking (PENDING for initial state)
             metadata = metadataService.createInitialMetadata(file);
+
+            // calculate checksum
+            String checksum = FileMetadataChecksum.computeMetadataSha256(metadata);
+            metadata.setChecksum(checksum);
+
+            if (metadataService.findByChecksum(checksum).isPresent()) {
+                throw new RecordAlreadyExistsException("Record with that checksum already exist");
+            }
 
             // extracting content
             String content = contentExtractor.extractText(file.getAbsolutePath(), metadata.getFileFormat());

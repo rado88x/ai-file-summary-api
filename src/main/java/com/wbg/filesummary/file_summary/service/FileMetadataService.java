@@ -1,17 +1,21 @@
 package com.wbg.filesummary.file_summary.service;
 
 
+import com.wbg.filesummary.file_summary.dto.ContentResponse;
+import com.wbg.filesummary.file_summary.dto.FileResponse;
 import com.wbg.filesummary.file_summary.dto.SummaryResponse;
 import com.wbg.filesummary.file_summary.entity.FileMetadata;
 import com.wbg.filesummary.file_summary.exception.ResourceNotFoundException;
 import com.wbg.filesummary.file_summary.repository.FileMetadataRepository;
 
+import com.wbg.filesummary.file_summary.util.FileMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,13 +30,22 @@ public class FileMetadataService {
         this.repository = repository;
     }
 
-    public List<FileMetadata> findAll() {
-        return repository.findAll();
+    public List<FileResponse> findAll() {
+        List<FileMetadata> files = repository.findAll();
+        List<FileResponse> mappedFiles = new ArrayList<>();
+        for (FileMetadata file : files) {
+            mappedFiles.add(FileMapper.mapSummary(file));
+        }
+        return mappedFiles;
     }
 
     public FileMetadata findById(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("File with ID " + id + " not found."));
+    }
+
+    public Optional<FileMetadata> findByChecksum(String checksum) {
+        return repository.findByChecksum(checksum);
     }
 
     public void save(FileMetadata metadata) {
@@ -45,9 +58,9 @@ public class FileMetadataService {
         return new SummaryResponse(metadata.getFileName(), metadata.getSummary(), metadata.getStatus());
     }
 
-    public String getContentById(Long id) {
+    public ContentResponse getContentById(Long id) {
         FileMetadata metadata = findById(id);
-        return metadata.getTextContent();
+        return new ContentResponse(metadata.getFileName(), metadata.getTextContent(), metadata.getStatus());
     }
 
     public FileMetadata createInitialMetadata(File file) {
