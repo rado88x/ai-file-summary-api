@@ -45,11 +45,15 @@ spring:
       enabled: true
 
 springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
-    tags-sorter: alpha
+  enable-data-rest: false
   api-docs:
     path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui
+    url: /v3/api-docs
+    disable-swagger-default-url: true
+    tags-sorter: alpha
+    operations-sorter: alpha
 
 management:
   endpoint:
