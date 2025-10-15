@@ -15,22 +15,15 @@ public class FileMapper {
         FileMapper.service = service;
     }
 
-    public static FileResponse mapSummary(FileMetadata fm) {
-        FileResponse fr = new FileResponse();
-        fr.setFileName(fm.getFileName());
-        fr.setFileFormat(fm.getFileFormat());
-        fr.setId(fm.getId());
-        fr.setStatus(fm.getStatus());
-        return fr;
+    public static FileResponse mapFile(FileMetadata fileMetadata) {
+        FileResponse fileResponse = new FileResponse(fileMetadata.getId(), fileMetadata.getFileName(), fileMetadata.getFileFormat(), fileMetadata.getStatus());
+        return fileResponse;
     }
 
     public static SummaryResponse mapSummary(Long id) {
-        SummaryResponse sr = new SummaryResponse();
-        FileMetadata fm = service.findById(id);
-        sr.setFileName(fm.getFileName());
-        sr.setSummary(fm.getSummary());
-        sr.setStatus(fm.getStatus());
-        return sr;
+        FileMetadata fileMetadata = service.findById(id);
+        SummaryResponse summaryResponse = new SummaryResponse(fileMetadata.getFileName(), fileMetadata.getSummary(), fileMetadata.getStatus());
+        return summaryResponse;
     }
 
 }

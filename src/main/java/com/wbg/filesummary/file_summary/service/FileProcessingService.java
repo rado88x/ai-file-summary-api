@@ -42,7 +42,7 @@ public class FileProcessingService {
             metadata.setChecksum(checksum);
 
             if (metadataService.findByChecksum(checksum).isPresent()) {
-                throw new RecordAlreadyExistsException("Record with that checksum already exist");
+                throw new RecordAlreadyExistsException("Record with that checksum already exist.");
             }
 
             // extracting content

@@ -34,9 +34,24 @@ public class FileMetadataService {
         List<FileMetadata> files = repository.findAll();
         List<FileResponse> mappedFiles = new ArrayList<>();
         for (FileMetadata file : files) {
-            mappedFiles.add(FileMapper.mapSummary(file));
+            mappedFiles.add(FileMapper.mapFile(file));
         }
         return mappedFiles;
+    }
+
+    public FileMetadata createInitialMetadata(File file) {
+        Optional<FileMetadata> existingMetadata = repository.findByFilePath(file.getAbsolutePath());
+        FileMetadata metadata = existingMetadata.orElseGet(FileMetadata::new);
+
+        metadata.setFileName(file.getName());
+        metadata.setFilePath(file.getAbsolutePath());
+        metadata.setFileSize(file.length());
+
+        metadata.setFileFormat(getFileExtension(file.getName()));
+        metadata.setStatus("PENDING");
+        logger.info("Step 1 -> Persisting initial entity '{}' to db: ", file.getName());
+
+        return repository.save(metadata);
     }
 
     public FileMetadata findById(Long id) {
@@ -61,21 +76,6 @@ public class FileMetadataService {
     public ContentResponse getContentById(Long id) {
         FileMetadata metadata = findById(id);
         return new ContentResponse(metadata.getFileName(), metadata.getTextContent(), metadata.getStatus());
-    }
-
-    public FileMetadata createInitialMetadata(File file) {
-        Optional<FileMetadata> existingMetadata = repository.findByFilePath(file.getAbsolutePath());
-        FileMetadata metadata = existingMetadata.orElseGet(FileMetadata::new);
-
-        metadata.setFileName(file.getName());
-        metadata.setFilePath(file.getAbsolutePath());
-        metadata.setFileSize(file.length());
-
-        metadata.setFileFormat(getFileExtension(file.getName()));
-        metadata.setStatus("PENDING");
-        logger.info("Step 1 -> Persisting initial entity '{}' to db: ", file.getName());
-
-        return repository.save(metadata);
     }
 
     private String getFileExtension(String fileName) {
