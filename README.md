@@ -14,14 +14,23 @@ RESTful API: Endpoints defined per shared specification, documented with Swagger
 Parallel/async processing (bonus): Optional asynchronous pipeline for faster throughput.
 Production-minded: Layered architecture, clean code, performance considerations
 
-##
-Flow:
+## Flow
 -> Controller accept request 
+
 -> Service scans folder, validates types, computes checksum 
+
 -> Calls OpenAI, handles retries/backoff and update db record
+
 -> DB persistence, idempotency by checksum
+
 -> Async processing with ThreadPoolTaskExecutor
+
 -> Error Handling and Custom exceptions.
+
+
+## Build & Run with Maven 
+mvn clean install
+mvn spring-boot:run
 
 
 <img width="1919" height="1044" alt="shot2" src="https://github.com/user-attachments/assets/6f455120-0175-482a-b43f-ab8f42ca025c" />
