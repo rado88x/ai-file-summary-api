@@ -29,9 +29,14 @@ Production-minded: Layered architecture, clean code, performance considerations
 
 
 ## Build & Run with Maven 
+Create OpenAI account, load some credit (5$ min). Set OPEN_API_KEY as env variable.
+
 mvn clean install
 
 mvn spring-boot:run
+
+## Swagger 
+checkout on branch "feat/add-swagger branch"
 
 
 <img width="1919" height="1044" alt="shot2" src="https://github.com/user-attachments/assets/6f455120-0175-482a-b43f-ab8f42ca025c" />
